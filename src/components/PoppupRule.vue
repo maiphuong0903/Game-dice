@@ -19,7 +19,7 @@
 export default {
     name:'popup-rule',
     props:{
-        isOpenPopup:Boolean
+        isOpenPopup:Boolean,
     },
     data(){
         return{

@@ -2,11 +2,15 @@
   <div id="app">
     <div class="wrapper clearfix">
       <player 
+        v-bind:isWinner="isWinner"
         v-bind:scoresPlayer="scoresPlayer"
         v-bind:currentScore="currentScore"
         v-bind:activePlayer="activePlayer"       
       />
       <control 
+        v-bind:isPlay="isPlay"
+        v-bind:finalScore="finalScore"
+        v-on:handleChangeFinalScore="handleChangeFinalScore"
         v-on:newGame="handleNewGame"
         v-on:newRollDice="handleRollDice"
         v-on:handleHold="handleHold"
@@ -33,11 +37,12 @@ export default {
   data() {
     return {
         scoresPlayer:[13,30],
-        currentScore:30,
+        currentScore:0,
         activePlayer:1 ,//nhan dien ai la nguoi choi hien tai
         isOpenPopup:false,
         isPlay:false,
-        dices:[1,5]
+        dices:[1,5],
+        finalScore:10
     };
   },
   comments: {
@@ -47,6 +52,9 @@ export default {
     PoppupRule
   },
   methods:{
+    handleChangeFinalScore(e){
+      console.log(e.target)
+    },
     handleNewGame(e){       
         this.isOpenPopup = true;              
     },
@@ -86,10 +94,22 @@ export default {
       let {scoresPlayer,activePlayer,currentScore} = this;
       let scoreOld = scoresPlayer[activePlayer];
       this.$set(this.scoresPlayer,activePlayer,scoreOld +currentScore);
-      this.nextPlayer();
+      if(!this.isWinner){
+        this.nextPlayer();
+      }
      }else{
       alert("Vui lòng ấn New Game để bắt đầu chơi")
      }
+    }
+  },
+  computed:{
+    isWinner(){
+      let {scoresPlayer,finalScore} = this;
+      if(scoresPlayer[0] >= finalScore || scoresPlayer[1] >= finalScore){
+        this.isPlay=false     
+        return true;
+      }
+      return false;
     }
   }
 };

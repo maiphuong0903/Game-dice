@@ -4,13 +4,24 @@
     <button class="control btn-roll" v-on:click="rollDice"><i class="ion-ios-loop"></i>Roll dice</button>
     <button class="control btn-hold" v-on:click="$emit('handleHold')"><i class="ion-ios-download-outline"></i>Hold</button>
             
-    <input type="number" placeholder="Final score" class="final-score">        
+    <input type="number" placeholder="Final score" class="final-score"
+        v-bind:value="finalScore"
+        v-on:input="$emit('handleChangeFinalScore',$event)"
+        v-bind:disabled="isPlay"
+        >        
   </div>
 </template>
 
 <script>
 export default {
     name:'control',
+    props:{
+        finalScore:[Number,String],
+        isPlay:{
+            typeof:Boolean,default:false
+        }
+        
+    },
     data(){
         return{
 
